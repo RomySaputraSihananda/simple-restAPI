@@ -8,10 +8,15 @@ server.get('/', (req, res) => {
     res.send('REST API READYYY 👏👏');
 });
 
+server.use((req, res, next) => {
+    res.setHeader('Access-Control-Allow-Origin', 'http://127.0.0.1:5500');
+    next();
+});
+
 server.get('/siswa', (req, res) => {
     let page = req.query.page;
     if (!page || page == 1) page = 0;
-    db.query(`SELECT * FROM siswa LIMIT ${page * 10}, 20 ORDER BY name`, (err, data) => {
+    db.query(`SELECT * FROM siswa LIMIT ${page * 10}, 20`, (err, data) => {
         if (err) throw err;
         const result = response('data berhasil..', data, true);
         res.status(200).json(result);
